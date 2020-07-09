@@ -1,0 +1,2 @@
+# spell_inconsistency_cop_sample
+変数名やメソッド名などの表記ゆれを指摘するcustom_copの実装例
