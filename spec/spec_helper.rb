@@ -97,4 +97,6 @@ RSpec.configure do |config|
   # as the one that triggered the failure.
   Kernel.srand config.seed
 =end
+
+  Dir["#{__dir__}/support/**/*.rb"].sort.each { |f| require f }
 end
