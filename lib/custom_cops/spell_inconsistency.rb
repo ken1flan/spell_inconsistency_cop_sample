@@ -3,14 +3,14 @@
 require 'yaml'
 
 module CustomCops
-  class SpellInconstency < RuboCop::Cop::Cop
+  class SpellInconsistency < RuboCop::Cop::Cop
     MESSAGE_TEMPLATE = "Use '%s' instead of '%s'."
-    SPELL_INCONSTENCIES = YAML.load_file(Pathname(__dir__).join('spell_inconstency.yml'))
+    SPELL_INCONSISTENCIES = YAML.load_file(Pathname(__dir__).join('spell_inconsistency.yml'))
 
     ASTS_SINGLE = %I[str const sym casgn arg kwarg].freeze
     ASTS_SINGLE.each do |ast|
       define_method "on_#{ast}" do |node|
-        SPELL_INCONSTENCIES.each do |wrong_keyword, correct_keyword|
+        SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
           add_offense(node, message: message(wrong_keyword, correct_keyword)) if node.source.include?(wrong_keyword)
         end
       end
@@ -20,7 +20,7 @@ module CustomCops
     ASTS_FIRST_CHILD.each do |ast|
       define_method "on_#{ast}" do |node|
         target = node.children.first
-        SPELL_INCONSTENCIES.each do |wrong_keyword, correct_keyword|
+        SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
           add_offense(node, message: message(wrong_keyword, correct_keyword)) if target.match?(/#{wrong_keyword}/)
         end
       end

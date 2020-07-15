@@ -2,7 +2,7 @@
 
 # require 'rails_helper'
 
-RSpec.describe CustomCops::SpellInconstency do
+RSpec.describe CustomCops::SpellInconsistency do
   describe '' do
     subject(:cop) { described_class.new }
 
