@@ -1,0 +1,2 @@
+require:
+  - './lib/custom_cops/spell_inconsistency'
