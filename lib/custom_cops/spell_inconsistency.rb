@@ -7,26 +7,21 @@ module CustomCops
     MESSAGE_TEMPLATE = "Use '%s' instead of '%s'."
     SPELL_INCONSISTENCIES = YAML.load_file(Pathname(__dir__).join('spell_inconsistency.yml'))
 
-    ASTS_SINGLE = %I[str const sym casgn arg kwarg].freeze
-    ASTS_SINGLE.each do |ast|
-      define_method "on_#{ast}" do |node|
+    NODE_TYPES = %I[str const sym].freeze
+    NODE_TYPES.each do |node_type|
+      define_method "on_#{node_type}" do |node|
         SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
           add_offense(node, message: message(wrong_keyword, correct_keyword)) if node.source.include?(wrong_keyword)
         end
       end
     end
 
-    ASTS_FIRST_CHILD = %I[lvasgn def].freeze
-    ASTS_FIRST_CHILD.each do |ast|
-      define_method "on_#{ast}" do |node|
-        target = node.children.first
-        SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
-          add_offense(node, message: message(wrong_keyword, correct_keyword)) if target.match?(/#{wrong_keyword}/)
-        end
+    def on_lvasgn(node)
+      target = node.children.first
+      SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
+        add_offense(node, message: message(wrong_keyword, correct_keyword)) if target.match?(/#{wrong_keyword}/)
       end
     end
-
-    private
 
     def message(wrong_keyword, correct_keyword)
       MESSAGE_TEMPLATE % [correct_keyword, wrong_keyword]
