@@ -7,8 +7,10 @@ module CustomCops
     MESSAGE_TEMPLATE = "Use '%s' instead of '%s'."
     SPELL_INCONSISTENCIES = YAML.load_file(Pathname(__dir__).join('spell_inconsistency.yml'))
 
-    NODE_TYPES = %I[str const sym].freeze
-    NODE_TYPES.each do |node_type|
+    NODE_TYPES_ONE = %I[str const sym].freeze
+    NODE_TYPES_FIRST_CHILD = %I[lvasgn def].freeze
+
+    NODE_TYPES_ONE.each do |node_type|
       define_method "on_#{node_type}" do |node|
         SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
           add_offense(node, message: message(wrong_keyword, correct_keyword)) if node.source.include?(wrong_keyword)
@@ -16,10 +18,12 @@ module CustomCops
       end
     end
 
-    def on_lvasgn(node)
-      target = node.children.first
-      SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
-        add_offense(node, message: message(wrong_keyword, correct_keyword)) if target.match?(/#{wrong_keyword}/)
+    NODE_TYPES_FIRST_CHILD.each do |node_type|
+      define_method "on_#{node_type}" do |node|
+        target = node.children.first
+        SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
+          add_offense(node, message: message(wrong_keyword, correct_keyword)) if target.match?(/#{wrong_keyword}/)
+        end
       end
     end
 

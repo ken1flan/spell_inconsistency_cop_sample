@@ -35,4 +35,11 @@ RSpec.describe CustomCops::SpellInconsistency do
       ^^^^^^^^^^^^^^^^^^^^ Use 'FAN_CLUB' instead of 'FANCLUB'.
     RUBY
   end
+
+  it 'メソッド名のまちがいを検知できること' do
+    expect_offense(<<-RUBY)
+      def set_fanclub; hoge; end
+      ^^^^^^^^^^^^^^^^^^^^^^^^^^ Use 'fan_club' instead of 'fanclub'.
+    RUBY
+  end
 end
