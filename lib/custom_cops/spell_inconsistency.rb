@@ -23,6 +23,13 @@ module CustomCops
       end
     end
 
+    def on_casgn(node)
+      target = node.children[1]
+      SPELL_INCONSISTENCIES.each do |wrong_keyword, correct_keyword|
+        add_offense(node, message: message(wrong_keyword, correct_keyword)) if target.match?(/#{wrong_keyword}/)
+      end
+    end
+
     def message(wrong_keyword, correct_keyword)
       MESSAGE_TEMPLATE % [correct_keyword, wrong_keyword]
     end
