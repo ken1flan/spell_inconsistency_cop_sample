@@ -49,4 +49,25 @@ RSpec.describe CustomCops::SpellInconsistency do
                    ^^^^^^^ Use 'fan_club' instead of 'fanclub'.
     RUBY
   end
+
+  it 'メソッドの引数のデフォルト値(文字列)の間違いを検知できること' do
+    expect_offense(<<-RUBY)
+      def set_func(a = 'fanclub'); hoge; end
+                       ^^^^^^^^^ Use 'fan_club' instead of 'fanclub'.
+    RUBY
+  end
+
+  it 'メソッドの引数のデフォルト値(シンボル)の間違いを検知できること' do
+    expect_offense(<<-RUBY)
+      def set_func(a = :fanclub); hoge; end
+                       ^^^^^^^^ Use 'fan_club' instead of 'fanclub'.
+    RUBY
+  end
+
+  it 'メソッドの引数のデフォルト値(定数)の間違いを検知できること' do
+    expect_offense(<<-RUBY)
+      def set_func(a = FANCLUB); hoge; end
+                       ^^^^^^^ Use 'FAN_CLUB' instead of 'FANCLUB'.
+    RUBY
+  end
 end
