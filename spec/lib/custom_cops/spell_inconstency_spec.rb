@@ -91,4 +91,18 @@ RSpec.describe CustomCops::SpellInconsistency do
                    ^^^^^^^^^^^^ Use 'fan_club' instead of 'fanclub'.
     RUBY
   end
+
+  it 'クラス名の間違いを検知できること' do
+    expect_offense(<<-RUBY)
+      class Fanclub; end
+            ^^^^^^^ Use 'FanClub' instead of 'Fanclub'.
+    RUBY
+  end
+
+  it 'モジュール名の間違いを検知できること' do
+    expect_offense(<<-RUBY)
+      module Fanclub; end
+             ^^^^^^^ Use 'FanClub' instead of 'Fanclub'.
+    RUBY
+  end
 end

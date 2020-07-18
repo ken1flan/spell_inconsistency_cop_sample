@@ -11,3 +11,5 @@ def set_func(a = :fanclub); hoge; end
 def set_func(a = FANCLUB); hoge; end
 def set_func(fanclub:); hoge; end
 def set_func(fanclub: 'a'); hoge; end
+class Fanclub; end
+module Fanclub; end
