@@ -1,6 +1,7 @@
 a = 'Fanclub'
 b = :fanclub
 c = FANCLUB
+d = { fanclub: 1 }
 fanclub = 'a'
 FANCLUB = 'a'
 def set_fanclub; hoge; end

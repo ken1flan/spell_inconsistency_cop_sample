@@ -22,6 +22,13 @@ RSpec.describe CustomCops::SpellInconsistency do
     RUBY
   end
 
+  it 'ハッシュのキー名のまちがいを検知できること' do
+    expect_offense(<<-RUBY)
+      fan_club = { fanclub: 1 }
+                   ^^^^^^^ Use 'fan_club' instead of 'fanclub'.
+    RUBY
+  end
+
   it '変数名のまちがいを検知できること' do
     expect_offense(<<-RUBY)
       fanclub = 'fan_club'
