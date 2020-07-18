@@ -8,7 +8,7 @@ module CustomCops
     SPELL_INCONSISTENCIES = YAML.load_file(Pathname(__dir__).join('spell_inconsistency.yml'))
 
     NODE_TYPES_ONE = %I[str const sym].freeze
-    NODE_TYPES_FIRST_CHILD = %I[lvasgn def arg kwarg].freeze
+    NODE_TYPES_FIRST_CHILD = %I[lvasgn def arg kwarg kwoptarg].freeze
 
     NODE_TYPES_ONE.each do |node_type|
       define_method "on_#{node_type}" do |node|
